@@ -13,19 +13,9 @@ export default async function handler(req, res) {
       const chrome = await import("chrome-aws-lambda");
       const puppeteer = await import("puppeteer-core");
 
-      let executablePath = await chrome.executablePath;
-
-      // Tambahkan log untuk melihat executablePath dari chrome-aws-lambda
+      // Gunakan hanya chrome-aws-lambda
+      const executablePath = await chrome.executablePath;
       console.log("chrome-aws-lambda executablePath:", executablePath);
-
-      // Fallback ke Puppeteer default jika executablePath undefined
-      if (!executablePath) {
-        console.log("Fallback ke Puppeteer default...");
-        const puppeteer = await import("puppeteer");
-        executablePath = puppeteer.executablePath();
-      }
-
-      console.log("Final Chromium Path:", executablePath); // Log final path yang digunakan
 
       browser = await puppeteer.launch({
         args: chrome.args,
