@@ -10,24 +10,17 @@ export default async function handler(req, res) {
     let browser = null;
 
     try {
-      const chrome = await import("chrome-aws-lambda");
-      const puppeteer = await import("puppeteer-core");
+      // Import Puppeteer (gunakan Chromium bawaan Puppeteer)
+      const puppeteer = await import("puppeteer");
 
-      // Ambil executablePath dari chrome-aws-lambda
-      const executablePath = await chrome.executablePath;
-      if (!executablePath) {
-        throw new Error("Chromium executablePath not found");
-      }
-
-      console.log("Path ke Chromium (chrome-aws-lambda):", executablePath);
-      console.log("chrome-aws-lambda args:", chrome.args);
-console.log("chrome-aws-lambda executablePath:", executablePath);
-console.log("chrome-aws-lambda headless:", chrome.headless);
+      // Ambil executablePath bawaan Puppeteer
+      const executablePath = puppeteer.executablePath();
+      console.log("Path ke Chromium (Puppeteer):", executablePath);
 
       browser = await puppeteer.launch({
-        args: chrome.args,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
         executablePath: executablePath,
-        headless: chrome.headless,
+        headless: true,
       });
 
       const page = await browser.newPage();
