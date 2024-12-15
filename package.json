@@ -1,0 +1,17 @@
+{
+  "name": "dribbble-comment-bot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
+    "next": "latest",
+    "puppeteer-core": "^10.1.0",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
