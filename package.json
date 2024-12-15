@@ -10,6 +10,7 @@
   "dependencies": {
     "chrome-aws-lambda": "^10.1.0",
     "next": "latest",
+    "puppeteer": "^23.10.4",
     "puppeteer-core": "^10.1.0",
     "react": "latest",
     "react-dom": "latest"

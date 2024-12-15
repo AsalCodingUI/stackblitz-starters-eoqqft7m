@@ -10,31 +10,25 @@ export default async function handler(req, res) {
     let browser = null;
 
     try {
-      const chrome = await import("chrome-aws-lambda");
-      const puppeteer = await import("puppeteer-core");
+      const puppeteer = await import("puppeteer");
+      const executablePath = puppeteer.executablePath(); // Ambil Chromium dari Puppeteer
 
-      // Gunakan hanya chrome-aws-lambda
-      const executablePath = await chrome.executablePath;
-      console.log("chrome-aws-lambda executablePath:", executablePath);
+      console.log("Path ke Chromium (manual):", executablePath);
 
       browser = await puppeteer.launch({
-        args: chrome.args,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
         executablePath: executablePath,
-        headless: chrome.headless,
+        headless: true,
       });
 
       const page = await browser.newPage();
 
       for (const [index, link] of links.entries()) {
         try {
-          console.log(`Navigasi ke ${link}...`);
           await page.goto(link, { waitUntil: "domcontentloaded" });
-
-          console.log("Mencari textarea komentar...");
           await page.waitForSelector("textarea.comment-box", { timeout: 10000 });
 
           const randomComment = comments[Math.floor(Math.random() * comments.length)];
-          console.log(`Mengetik komentar: ${randomComment}`);
           await page.type("textarea.comment-box", randomComment);
           await page.keyboard.press("Enter");
 
@@ -44,7 +38,6 @@ export default async function handler(req, res) {
         }
 
         if (index < links.length - 1) {
-          console.log("Menunggu 2 menit sebelum lanjut...");
           await new Promise((resolve) => setTimeout(resolve, 120000));
         }
       }
